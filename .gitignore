@@ -1,0 +1,7 @@
+.televenv
+.env
+__pycache__
+.vscode
+
+# Scrapped data
+data/raw/scraping_session.session*
