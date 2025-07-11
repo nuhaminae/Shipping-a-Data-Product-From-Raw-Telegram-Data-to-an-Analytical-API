@@ -18,13 +18,13 @@ jobs:
       - name: Set up pip cache directory
         run: echo "PIP_CACHE_DIR=$(pip cache dir)" >> $GITHUB_ENV
 
-      - name: Cache pip dependencies
+      - name: Cache venv
         uses: actions/cache@v4
         with:
-          path: ${{ env.PIP_CACHE_DIR }}
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+          path: ./.televenv
+          key: ${{ runner.os }}-venv-${{ hashFiles('requirements.txt') }}
+          restore-keys: ${{ runner.os }}-venv-
+
 
       - name: Install dependencies
         run: |
