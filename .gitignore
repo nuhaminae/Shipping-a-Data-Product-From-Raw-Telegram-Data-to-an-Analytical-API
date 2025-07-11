@@ -1,7 +1,13 @@
+# Virtual env
 .televenv
-.env
-__pycache__
+
+# Cache
+__pycache__/
+.pytest_cache/
 .vscode
 
 # Scrapped data
 data/raw/scraping_session.session*
+
+# Secrets
+.env
