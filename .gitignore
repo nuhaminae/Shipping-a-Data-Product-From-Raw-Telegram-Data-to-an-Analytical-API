@@ -9,5 +9,6 @@ __pycache__/
 # Scrapped data
 data/raw/scraping_session.session*
 
-# Secrets
+# Secrets and artifacts
 .env
+logs/
