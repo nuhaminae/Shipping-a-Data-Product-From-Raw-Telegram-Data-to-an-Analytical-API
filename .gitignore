@@ -6,8 +6,9 @@ __pycache__/
 .pytest_cache/
 .vscode
 
-# Scrapped data
-data/raw/scraping_session.session*
+# Scraped data
+scraper/
 
-# Secrets
+# Secrets and artifacts
 .env
+logs/
