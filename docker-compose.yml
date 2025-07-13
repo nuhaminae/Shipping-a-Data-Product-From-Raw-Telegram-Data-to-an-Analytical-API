@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:15
@@ -14,7 +12,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - backend
-
+  
   app:
     build: .
     container_name: telegram-app
@@ -26,9 +24,11 @@ services:
       - "8000:8000"
     networks:
       - backend
-
+  
   dagster:
-    image: dagster/dagster
+    build: 
+      context: ./dagster
+      dockerfile: Dockerfile
     container_name: dagster
     ports:
       - "3000:3000"
