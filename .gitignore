@@ -12,3 +12,6 @@ scraper/
 # Secrets and artifacts
 .env
 logs/
+
+# Python artifacts
+wheelhouse/
