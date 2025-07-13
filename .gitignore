@@ -19,3 +19,6 @@ logs/
 
 # Python artifacts
 wheelhouse/
+
+# JSON files
+*.json
