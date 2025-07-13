@@ -134,6 +134,9 @@ The challenge focuses on turning unstructured channel data into:
 ```
 
 Open docs at http://localhost:8080
+
+[dbt docs](http://localhost:8080/#!/overview/medical_insights)
+
 ![Lineage Graph](plots/01_lineage_graph.png)
 
 ## Contribution
