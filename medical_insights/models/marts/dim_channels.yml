@@ -17,3 +17,4 @@ models:
 
       - name: channel_title
         description: "Display name of the Telegram channel"
+

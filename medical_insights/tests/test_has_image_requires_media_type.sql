@@ -4,3 +4,4 @@
 SELECT *
 FROM {{ ref('fct_messages') }}
 WHERE has_image = true AND media_type IS NULL
+

@@ -37,3 +37,4 @@ models:
 
       - name: has_image
         description: "Boolean flag indicating if the message includes an image"
+

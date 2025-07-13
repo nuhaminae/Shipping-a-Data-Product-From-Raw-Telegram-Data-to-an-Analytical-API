@@ -1,6 +1,3 @@
--- A fact table containing one row per message, with foreign keys to your dimension tables and key metrics (e.g., message length, has_image).
--- One row per message	(Core facts, FK to dimensions)
-
 {{ config(materialized='table') }}
 
 with base as (
