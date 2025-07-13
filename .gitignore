@@ -6,6 +6,10 @@ __pycache__/
 .pytest_cache/
 .vscode
 
+# DVC
+/.dvc/tmp
+/.dvc/cache
+
 # Scraped data
 scraper/
 
