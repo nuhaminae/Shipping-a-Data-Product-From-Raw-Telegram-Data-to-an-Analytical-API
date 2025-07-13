@@ -139,6 +139,8 @@ Open docs at http://localhost:8080
 
 ![Lineage Graph](plots/01_lineage_graph.png)
 
+![Star Schema Diagram](plots/02_star_schema_diagram.png)
+
 ## Contribution
 Contributions are welcome! Please fork the repository and submit a pull request. For major changes, open an issue first to discuss what you would like to change.
 
