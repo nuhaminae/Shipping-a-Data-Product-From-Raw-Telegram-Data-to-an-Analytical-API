@@ -1,6 +1,3 @@
--- dim_channels: A dimension table with information about each Telegram channel.
--- One row per unique channel (Metadata and grouping)
-
 {{ config(materialized='table') }}
 
 with source as (

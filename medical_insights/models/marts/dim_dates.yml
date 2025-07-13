@@ -24,3 +24,4 @@ models:
 
       - name: weekday
         description: "Day of the week extracted from date_day (0=Sunday, 6=Saturday)"
+

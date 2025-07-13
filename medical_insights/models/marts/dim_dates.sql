@@ -1,6 +1,3 @@
--- dim_dates: A dimension table for time-based analysis.
--- One row per day	(Time-based analysis)
-
 {{ config(materialized='table') }}
 
 with source as (

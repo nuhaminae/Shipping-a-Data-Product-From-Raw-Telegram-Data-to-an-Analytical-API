@@ -1,5 +1,3 @@
--- This is a staging model for telegram messages (for lightly cleaned and typed models from raw.telegram_messages).
-
 {{ config(
     materialized='view'
     ) }}
