@@ -22,3 +22,6 @@ wheelhouse/
 
 # JSON files
 *.json
+
+# dbt artifacts
+target/
