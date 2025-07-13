@@ -7,7 +7,7 @@ This project builds an analytical data product by extracting Telegram message da
 
 ## Key Features
 - Raw Telegram data scraped with Telethon and stored in structured JSON
-- PostgreSQL warehouse with dbt-powered modeling
+- PostgreSQL warehouse with dbt-powered modelling
 - Star schema with staging, dimensional, and fact models
 - Built-in and custom tests for data integrity and business logic
 - Lineage graph and model documentation via dbt docs
@@ -57,7 +57,7 @@ The challenge focuses on turning unstructured channel data into:
     │   │       ├── stg_telegram_messages.sql
     │   │       └── stg_telegram_messages.yml
     │   ├── ...
-    │   ├── tests/
+    │   ├── tests/                               # dbt tests for data integrity    
     │   ├── .gitignore
     │   ├── dbt_project.yml
     │   └── README.md
@@ -117,14 +117,8 @@ The challenge focuses on turning unstructured channel data into:
     ```
 
 ## Usage
-- Run scraper to collect Telegram messages
-``` bash
-    python scripts/_01_scraper.py
-```
-- Load JSON files into PostgreSQL
-``` bash
-    python scripts/_02_data_loader.py
-```
+- Run scraper to collect Telegram messages : `scripts/_01_scraper.py`
+- Load JSON files into PostgreSQL: `scripts/_02_data_loader.py`
 - Build models with dbt
 ``` bash
     dbt build
@@ -148,4 +142,32 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 Make sure to follow best practices for version control, testing, and documentation.
 
 ## Project Status
+**Completed**
+
+- **Environment Setup**: Dockerised dev setup with reproducible virtual environment, `.env` and `.gitignore` in place.
+- **Data Scraping**: Collected raw Telegram messages using Telethon and stored as structured JSON with logging.
+- **PostgreSQL Load**: JSONs ingested into `raw.telegram_messages` using custom loader script.
+- **dbt Modelling**:
+  - Models built in `medical_insights/models/`
+  - Created `stg_telegram_messages` with composite `message_id`
+  - Built `dim_channels`, `dim_dates`, and `fct_messages` with full star schema design
+- **Testing**:
+  - Applied `not_null` and `unique` schema tests to keys and critical fields
+  - Implemented custom test: *has_image → media_type must not be null* `tests/test_has_image_required.sql`
+  - All tests pass (`dbt test` status: passed)
+- **Documentation**:
+  - Column descriptions and metadata added via `.yml` files
+  - DAG lineage visualised in `dbt docs` and linked in `plots/01_lineage_graph.png`
+  - Clean and contextual `README.md` provided for onboarding
+
+**Next Steps**
+
+- YOLOv8 image tagging for messages with visual media
+- Creation of `fct_image_detections` model with object detection outputs
+- FastAPI deployment with endpoints like:
+  - `/api/channels/{channel}/activity`
+  - `/api/reports/top-products`
+  - `/api/search/messages?query=...`
+
+---
 Project underway, checkout the commit history [here](https://github.com/nuhaminae/Shipping-a-Data-Product-From-Raw-Telegram-Data-to-an-Analytical-API/commits?author=nuhaminae). 
