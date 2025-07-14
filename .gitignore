@@ -6,8 +6,22 @@ __pycache__/
 .pytest_cache/
 .vscode
 
-# Scrapped data
-data/raw/scraping_session.session*
+# DVC
+/.dvc/tmp
+/.dvc/cache
 
-# Secrets
+# Scraped data
+scraper/
+
+# Secrets and artifacts
 .env
+logs/
+
+# Python artifacts
+wheelhouse/
+
+# JSON files
+*.json
+
+# dbt artifacts
+target/
