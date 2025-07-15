@@ -37,4 +37,18 @@ models:
       - name: has_image
         description: "Boolean flag if the message contains an image"
         
-        
+      - name: channel_slug
+        description: "Slugified channel handle for use in filenames and detection joins"
+        tests:
+          - not_null
+
+    meta:
+      joins:
+        - name: dim_channels
+          target_column: channel_id
+          source_column: channel_slug
+        - name: dim_dates
+          target_column: date_day
+          source_column: posted_at
+
+    tags: ["mart", "telegram", "messages", "image_integrity"]
