@@ -25,6 +25,7 @@ wheelhouse/
 
 # dbt artifacts
 target/
+dbt_packages/
 
 # Images
 data/images/
