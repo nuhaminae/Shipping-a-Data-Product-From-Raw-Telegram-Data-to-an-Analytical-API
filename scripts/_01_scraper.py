@@ -81,12 +81,20 @@ async def scrape_channel(client, channel_username):
             "views": msg.views or 0,  # Fallback if views is None
             "media_type": None,
         }
+        # Check if the message has media and determine its type
+        if msg.media and hasattr(msg.media, "photo"):
+            msg_dict["media_type"] = "photo"
+            # Save photo to disk
+            image_path = os.path.join(
+                "..", "data/images", f"{channel_username[1:]}_{msg.id}.jpg"
+            )
+            os.makedirs(os.path.dirname(image_path), exist_ok=True)
+            await client.download_media(msg, image_path)
+            msg_dict["media_path"] = image_path  # Optional: include in JSON
 
-        if msg.media:
-            if hasattr(msg.media, "photo"):
-                msg_dict["media_type"] = "photo"
-            elif hasattr(msg.media, "document"):
-                msg_dict["media_type"] = "document"
+        elif msg.media and hasattr(msg.media, "document"):
+            msg_dict["media_type"] = "document"
+
         messages.append(msg_dict)
 
     with open(output_path, "w", encoding="utf-8") as f:
