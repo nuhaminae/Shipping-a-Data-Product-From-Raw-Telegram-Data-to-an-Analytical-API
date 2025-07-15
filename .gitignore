@@ -29,3 +29,6 @@ dbt_packages/
 
 # Images
 data/images/
+
+# YOLO artifacts
+.pt
