@@ -17,4 +17,9 @@ models:
 
       - name: channel_title
         description: "Display name of the Telegram channel"
+      
+      - name: channel_slug
+        description: "Slug version of channel username for clean joins and filenames"
+        tests:
+          - not_null
 

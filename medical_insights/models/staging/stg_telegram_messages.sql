@@ -6,12 +6,14 @@ with raw as (
     select
         channel_title,
         channel_username,
-        concat(channel_username, '_', id::text) as message_id,  -- Concatenating for unique message ID
+        concat(replace(channel_username, '@', ''), '_', id::text) as message_id,  -- Concatenating for unique message ID
         text,
         date::timestamp as posted_at,
         views::integer,
-        media_type
+        media_type,
+        replace(channel_username, '@', '') as channel_slug
     from raw.telegram_messages
+
 )
 
 select
@@ -23,5 +25,7 @@ select
     views,
     media_type,
     length(text) as message_length,                 --  Calculating message length for analysis
-    media_type ilike '%image%' as has_image         --  Boolean flag for image presence
+    media_type = 'photo' as has_image,              --  Boolean flag for image presence
+    channel_slug
+
 from raw
