@@ -22,11 +22,11 @@ def load_telegram_messages():
 
     try:
         conn = psycopg2.connect(
-            dbname=os.getenv("PG_DB"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"),
+            dbname=os.getenv("POSTGRES_DB"),
+            user=os.getenv("POSTGRES_USER"),
+            password=os.getenv("POSTGRES_PASSWORD"),
+            host=os.getenv("POSTGRES_HOST"),
+            port=os.getenv("POSTGRES_PORT"),
         )
         cursor = conn.cursor()
         logging.info("Connected to PostgreSQL database.")
@@ -56,13 +56,15 @@ def load_telegram_messages():
         logging.error(f"Error during schema/table creation: {e}")
         return
 
+    # Load messages from JSON files
+    logging.info("Loading messages from JSON files...")
     data_paths = [
-        "../data/raw/telegram_messages/2025-07-11/CheMed123.json",
-        "../data/raw/telegram_messages/2025-07-11/lobelia4cosmetics.json",
-        "../data/raw/telegram_messages/2025-07-11/newoptics.json",
-        "../data/raw/telegram_messages/2025-07-11/thiopianfoodanddrugauthority.json",
-        "../data/raw/telegram_messages/2025-07-11/tikvahpharma.json",
-        "../data/raw/telegram_messages/2025-07-11/yetenaweg.json",
+        "../data/raw/telegram_messages/2025-07-15/CheMed123.json",
+        "../data/raw/telegram_messages/2025-07-15/lobelia4cosmetics.json",
+        "../data/raw/telegram_messages/2025-07-15/newoptics.json",
+        "../data/raw/telegram_messages/2025-07-15/thiopianfoodanddrugauthority.json",
+        "../data/raw/telegram_messages/2025-07-15/tikvahpharma.json",
+        "../data/raw/telegram_messages/2025-07-15/yetenaweg.json",
     ]
 
     total_inserted = 0
