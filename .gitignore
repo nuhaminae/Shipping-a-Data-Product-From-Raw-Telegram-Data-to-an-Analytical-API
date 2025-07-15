@@ -31,4 +31,4 @@ dbt_packages/
 data/images/
 
 # YOLO artifacts
-.pt
+*.pt
