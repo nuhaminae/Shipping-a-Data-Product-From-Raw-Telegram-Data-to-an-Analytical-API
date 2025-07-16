@@ -1,7 +1,24 @@
 import json, os
 import psycopg2
 import logging
+import argparse
 from dotenv import load_dotenv
+from datetime import datetime
+
+# -------------------- Setup -------------------- #
+parser = argparse.ArgumentParser()
+parser.add_argument("--test", action="store_true", help="Run loader in test mode")
+args = parser.parse_args()
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+base_path = (
+    os.path.join(script_dir, "..", "data", "test")
+    if args.test
+    else os.path.join(script_dir, "..", "data", "raw", "telegram_messages")
+)
+today = datetime.today().strftime("%Y-%m-%d")
+folder_path = os.path.abspath(os.path.join(base_path, today))
+
 
 # Set up and configure logging
 log_dir = os.path.join("..", "logs")
@@ -15,14 +32,21 @@ logging.basicConfig(
 )
 
 
+# -------------------- Main Function --------------------#
 def load_telegram_messages():
     logging.info("Loading environment variables...")
+    env_path = os.path.abspath(os.path.join(script_dir, "..", ".env"))
+    load_dotenv(env_path)
 
-    load_dotenv(os.path.join(os.path.abspath(os.path.join("..")), ".env"))
+    logging.info(f"POSTGRES_DB_TEST from env: {os.getenv('POSTGRES_DB_TEST')}")
+
+    table_name = "raw.telegram_messages_test" if args.test else "raw.telegram_messages"
 
     try:
         conn = psycopg2.connect(
-            dbname=os.getenv("POSTGRES_DB"),
+            dbname=(
+                os.getenv("POSTGRES_DB_TEST") if args.test else os.getenv("POSTGRES_DB")
+            ),
             user=os.getenv("POSTGRES_USER"),
             password=os.getenv("POSTGRES_PASSWORD"),
             host=os.getenv("POSTGRES_HOST"),
@@ -37,10 +61,10 @@ def load_telegram_messages():
     try:
         logging.info("Ensuring raw schema and telegram_messages table exist...")
         cursor.execute("CREATE SCHEMA IF NOT EXISTS raw;")
-        cursor.execute("DROP TABLE IF EXISTS raw.telegram_messages;")
+        cursor.execute(f"DROP TABLE IF EXISTS {table_name};")
         cursor.execute(
-            """
-            CREATE TABLE IF NOT EXISTS raw.telegram_messages (
+            f"""
+            CREATE TABLE IF NOT EXISTS {table_name} (
                 channel_title TEXT,
                 channel_username TEXT,
                 id BIGINT,
@@ -59,12 +83,9 @@ def load_telegram_messages():
     # Load messages from JSON files
     logging.info("Loading messages from JSON files...")
     data_paths = [
-        "../data/raw/telegram_messages/2025-07-15/CheMed123.json",
-        "../data/raw/telegram_messages/2025-07-15/lobelia4cosmetics.json",
-        "../data/raw/telegram_messages/2025-07-15/newoptics.json",
-        "../data/raw/telegram_messages/2025-07-15/thiopianfoodanddrugauthority.json",
-        "../data/raw/telegram_messages/2025-07-15/tikvahpharma.json",
-        "../data/raw/telegram_messages/2025-07-15/yetenaweg.json",
+        os.path.join(folder_path, f)
+        for f in os.listdir(folder_path)
+        if f.endswith(".json")
     ]
 
     total_inserted = 0
@@ -79,8 +100,8 @@ def load_telegram_messages():
                 messages = json.load(f)
                 for msg in messages:
                     cursor.execute(
-                        """
-                        INSERT INTO raw.telegram_messages (
+                        f"""
+                        INSERT INTO {table_name} (
                             channel_title, channel_username, id, text, date, views, media_type
                         ) VALUES (%s, %s, %s, %s, %s, %s, %s)
                         """,
@@ -102,3 +123,8 @@ def load_telegram_messages():
     cursor.close()
     conn.close()
     logging.info(f"Load complete: {total_inserted} messages inserted.")
+
+
+# -------------------- Execute --------------------#
+if __name__ == "__main__":
+    load_telegram_messages()
