@@ -31,7 +31,8 @@ if not api_id or not api_hash:
     raise ValueError("Missing Telegram API credentials. Check your .env file.")
 
 # Define path for the Telegram session file
-session_path = os.path.join("..", "scraper", "scraping_session")
+# session_path = os.path.join("..", "scraper", "scraping_session")
+session_path = os.path.abspath(os.path.join("..", "scraper", "scraping_session"))
 os.makedirs(os.path.join("..", "scraper"), exist_ok=True)
 
 # Initalise Telegram client
