@@ -137,9 +137,25 @@ Open docs at http://localhost:8080
 
 [dbt docs](http://localhost:8080/#!/overview/medical_insights)
 
+- Lineage Graph
 ![Lineage Graph](plots/01_lineage_graph.png)
 
+- Star Schema Diagram
 ![Star Schema Diagram](plots/02_star_schema_diagram.png)
+
+- Fast API Endpoints
+
+Open docs at http://localhost:8001/docs
+``` bash
+    uvicorn api.main:app
+```
+![Fast API Endpoints](plots/03_fastapi_endpoints.png)
+
+- Dagster UI
+``` bash
+    dagster dev
+```
+Launch Dagste UI at http://localhost:3000, http://127.0.0.1:8888/jobs
 
 ## Contribution
 Contributions are welcome! Please fork the repository and submit a pull request. For major changes, open an issue first to discuss what you would like to change.
