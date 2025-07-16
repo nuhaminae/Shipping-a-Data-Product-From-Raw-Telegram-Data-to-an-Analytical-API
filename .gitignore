@@ -32,3 +32,6 @@ data/images/
 
 # YOLO artifacts
 *.pt
+
+# Dagster artifacts
+.tmp_dagster_home_*
