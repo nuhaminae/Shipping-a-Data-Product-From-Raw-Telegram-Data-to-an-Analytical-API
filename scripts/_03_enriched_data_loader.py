@@ -1,11 +1,14 @@
-import json, os, sys
+import json, os
 import psycopg2
 import logging
 import argparse
 from dotenv import load_dotenv
 
+# Specify directory
+root_dir = os.path.abspath(os.path.join(".."))
+
 # Set up and configure logging
-log_dir = os.path.join("..", "logs")
+log_dir = os.path.join(root_dir, "logs")
 os.makedirs(log_dir, exist_ok=True)
 log_path = os.path.join(log_dir, "enriched_loader.log")
 
@@ -15,11 +18,10 @@ logging.basicConfig(
     handlers=[logging.FileHandler(log_path), logging.StreamHandler()],
 )
 
+# Set up test
 parser = argparse.ArgumentParser()
 parser.add_argument("--test", action="store_true", help="Run loader in test mode")
 args = parser.parse_args()
-
-sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
 
 
 class EnrichedDataLoader:
@@ -116,3 +118,8 @@ class EnrichedDataLoader:
             f"{len(data)} detections loaded into enriched.fct_image_detections."
         )
         logging.info("Enriched messages loaded successfully.")
+
+
+if __name__ == "__main__":
+    enriched_loader = EnrichedDataLoader()
+    enriched_loader.load_enriched_messages()

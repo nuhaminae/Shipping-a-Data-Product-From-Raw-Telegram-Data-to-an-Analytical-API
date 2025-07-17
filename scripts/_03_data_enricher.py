@@ -1,4 +1,4 @@
-import os, sys
+import os
 import json
 import psycopg2
 import logging
@@ -6,8 +6,11 @@ import argparse
 from dotenv import load_dotenv
 from ultralytics import YOLO
 
+# Specify directory
+root_dir = os.path.abspath(os.path.join(".."))
+
 # Set up and configure logging
-log_dir = os.path.join("..", "logs")
+log_dir = os.path.join(root_dir, "logs")
 os.makedirs(log_dir, exist_ok=True)
 log_path = os.path.join(log_dir, "enricher.log")
 
@@ -17,17 +20,22 @@ logging.basicConfig(
     handlers=[logging.FileHandler(log_path), logging.StreamHandler()],
 )
 
+# Set up test
 parser = argparse.ArgumentParser()
 parser.add_argument("--test", action="store_true", help="Run enricher in test mode")
 args = parser.parse_args()
 
-sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
-
-root_dir = os.path.abspath(os.path.join(".."))
+# Class input directory
 image_base_path = (
     os.path.join(root_dir, "data", "test", "images")
     if args.test
     else os.path.join(root_dir, "data", "images")
+)
+
+output_base_path = (
+    os.path.join(root_dir, "data", "test", "fct_image_detections.json")
+    if args.test
+    else os.path.join(root_dir, "data", "processed", "fct_image_detections.json")
 )
 
 
@@ -36,11 +44,7 @@ class DataEnricher:
         self,
         model_path="yolov8n.pt",
         image_dir=image_base_path,
-        output_path=(
-            "../data/test/fct_image_detections.json"
-            if args.test
-            else "../data/processed/fct_image_detections.json"
-        ),
+        output_path=output_base_path,
     ):
         """
         Initialise the DataEnricher with model path, image directory, and output file path.
@@ -153,3 +157,9 @@ class DataEnricher:
             )
         except Exception as e:
             logging.error(f"Failed to save detections: {e}")
+
+
+if __name__ == "__main__":
+    enricher = DataEnricher()
+    enricher.process_all()
+    enricher.save_results()

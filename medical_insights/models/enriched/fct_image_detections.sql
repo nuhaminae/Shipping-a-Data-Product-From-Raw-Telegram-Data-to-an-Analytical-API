@@ -1,5 +1,5 @@
 {{ config(
-    materialized = 'table'
+    materialized = 'table', schema='enriched'
 ) }}
 
 SELECT
@@ -12,4 +12,4 @@ FROM
 LEFT JOIN
     {{ ref('fct_messages') }} AS messages
     ON detections.message_id = messages.message_id
-
+    
