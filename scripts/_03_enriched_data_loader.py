@@ -1,6 +1,7 @@
-import json, os
+import json, os, sys
 import psycopg2
 import logging
+import argparse
 from dotenv import load_dotenv
 
 # Set up and configure logging
@@ -14,9 +15,22 @@ logging.basicConfig(
     handlers=[logging.FileHandler(log_path), logging.StreamHandler()],
 )
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--test", action="store_true", help="Run loader in test mode")
+args = parser.parse_args()
+
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
+
 
 class EnrichedDataLoader:
-    def __init__(self, path="../data/processed/fct_image_detections.json"):
+    def __init__(
+        self,
+        path=(
+            "../data/test/fct_image_detections.json"
+            if args.test
+            else "../data/processed/fct_image_detections.json"
+        ),
+    ):
         """
         Initialise the EnrichedDataLoader.
         """
@@ -31,10 +45,13 @@ class EnrichedDataLoader:
         logging.info("Loading environment variables...")
 
         load_dotenv(os.path.join(os.path.abspath(os.path.join("..")), ".env"))
-
         try:
             conn = psycopg2.connect(
-                dbname=os.getenv("POSTGRES_DB"),
+                dbname=(
+                    os.getenv("POSTGRES_DB_TEST")
+                    if args.test
+                    else os.getenv("POSTGRES_DB")
+                ),
                 user=os.getenv("POSTGRES_USER"),
                 password=os.getenv("POSTGRES_PASSWORD"),
                 host=os.getenv("POSTGRES_HOST"),
@@ -44,6 +61,13 @@ class EnrichedDataLoader:
             logging.info("Connected to PostgreSQL database.")
         except Exception as e:
             logging.error(f"Database connection failed: {e}")
+            return
+
+        cursor.execute("SELECT current_database();")
+        active_db = cursor.fetchone()[0]
+        if args.test and active_db != "telegram_health_test":
+            logging.error("Aborting: connected to wrong database for test mode.")
+            conn.close()
             return
 
         try:
