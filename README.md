@@ -147,12 +147,18 @@ dbt docs serve  # Access docs at http://localhost:8080
 uvicorn api.main:app    #Open docs at http://localhost:8001/docs
 ```
 Key endpoints:
-- `/api/reports/top-products`
-- `/api/channels/{channel_slug}/activity`
-- `/api/search/messages?query=...`
-
 - Fast API Endpoints
 ![Fast API Endpoints](plots/03_fastapi_endpoints.png)
+
+- `/api/reports/top-products`: _“top 5 most frequently mentioned products”_
+![Query 1](plots/04_query1.png)
+![Response 1](plots/05_response1.png)
+- `/api/channels/{channel_slug}/activity`: _"posting activity for ‘CheMed123’ channel"_
+![Query 2](plots/06_query2.png)
+![Response 2](plots/07_response2.png)
+- `/api/search/messages?query=...`: _“messages containing keyword ‘vitamin’”_
+![Query 3](plots/06_query3.png)
+![Response 3](plots/07_response3.png)
 
 ---
 ## Scheduling with Dagster
