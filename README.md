@@ -106,7 +106,8 @@ dvc pull
 ## Usage
 ### Run the ELT Pipeline
 ```bash
-dagster dev  # Opens Dagster UI at http://localhost:8888
+dagster dev  
+dagster dev --port 8888         # Opens Dagster UI at http://localhost:8888
 ```
 Ops include:
 - `scrape_telegram` → Telethon-based scraper
@@ -144,7 +145,8 @@ dbt docs serve  # Access docs at http://localhost:8080
 ### API Interface (FastAPI)
 
 ``` bash
-uvicorn api.main:app    #Open docs at http://localhost:8001/docs
+uvicorn api.main:app   
+uvicorn api.main:app --reload --port 8000            #Open docs at http://localhost:8000/docs
 ```
 Key endpoints:
 - Fast API Endpoints
