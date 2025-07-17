@@ -30,6 +30,7 @@ dbt_packages/
 # Images and test
 data/images/
 test/
+
 # YOLO artifacts
 *.pt
 
