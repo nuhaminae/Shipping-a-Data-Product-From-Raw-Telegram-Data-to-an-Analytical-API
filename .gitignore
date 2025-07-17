@@ -27,8 +27,9 @@ wheelhouse/
 target/
 dbt_packages/
 
-# Images
+# Images and test
 data/images/
+test/
 
 # YOLO artifacts
 *.pt
