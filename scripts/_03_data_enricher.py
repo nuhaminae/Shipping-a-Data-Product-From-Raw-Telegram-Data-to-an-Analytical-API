@@ -1,7 +1,8 @@
-import os
+import os, sys
 import json
 import psycopg2
 import logging
+import argparse
 from dotenv import load_dotenv
 from ultralytics import YOLO
 
@@ -16,13 +17,30 @@ logging.basicConfig(
     handlers=[logging.FileHandler(log_path), logging.StreamHandler()],
 )
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--test", action="store_true", help="Run enricher in test mode")
+args = parser.parse_args()
+
+sys.path.append(os.path.abspath(os.path.join(os.getcwd(), "..")))
+
+root_dir = os.path.abspath(os.path.join(".."))
+image_base_path = (
+    os.path.join(root_dir, "data", "test", "images")
+    if args.test
+    else os.path.join(root_dir, "data", "images")
+)
+
 
 class DataEnricher:
     def __init__(
         self,
         model_path="yolov8n.pt",
-        image_dir="data/images",
-        output_path="data/processed/fct_image_detections.json",
+        image_dir=image_base_path,
+        output_path=(
+            "../data/test/fct_image_detections.json"
+            if args.test
+            else "../data/processed/fct_image_detections.json"
+        ),
     ):
         """
         Initialise the DataEnricher with model path, image directory, and output file path.
@@ -47,7 +65,11 @@ class DataEnricher:
         """
         try:
             conn = psycopg2.connect(
-                dbname=os.getenv("POSTGRES_DB"),
+                dbname=(
+                    os.getenv("POSTGRES_DB_TEST")
+                    if args.test
+                    else os.getenv("POSTGRES_DB")
+                ),
                 user=os.getenv("POSTGRES_USER"),
                 password=os.getenv("POSTGRES_PASSWORD"),
                 host=os.getenv("POSTGRES_HOST"),
