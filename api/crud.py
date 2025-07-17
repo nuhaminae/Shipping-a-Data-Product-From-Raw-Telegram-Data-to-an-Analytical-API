@@ -1,6 +1,5 @@
 # SQL query logic
 from api.database import get_connection
-import re
 
 
 # ______________ Get all channel slugs ______________#
@@ -122,7 +121,7 @@ def search_messages(query: str):
 
     results = []
     for row in rows:
-        print("Row detections:", row[3])  # ✅ prints before return
+        print("Row detections:", row[3])  # prints before return
         results.append(
             {
                 "message_id": row[0],
