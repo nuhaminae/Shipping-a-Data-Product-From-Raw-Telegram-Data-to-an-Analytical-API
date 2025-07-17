@@ -41,3 +41,5 @@ models:
       +schema: staging
     marts:
       +schema: marts
+    enriched:
+      +schema: enriched
