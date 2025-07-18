@@ -155,11 +155,9 @@ Key endpoints:
 - `/api/reports/top-products`: _“top 5 most frequently mentioned products”_
 ![Query 1](insights/04_query1.png)
 ![Response 1](insights/05_response1.png)
-
 - `/api/channels/{channel_slug}/activity`: _"posting activity for ‘CheMed123’ channel"_
 ![Query 2](insights/06_query2.png)
 ![Response 2](insights/07_response2.png)
-
 - `/api/search/messages?query=...`: _“messages containing keyword ‘vitamin’”_
 ![Query 3](insights/08_query3.png)
 ![Response 3](insights/09_response3.png)
