@@ -106,7 +106,8 @@ dvc pull
 ## Usage
 ### Run the ELT Pipeline
 ```bash
-dagster dev  # Opens Dagster UI at http://localhost:8888
+dagster dev  
+dagster dev --port 8888         # Opens Dagster UI at http://localhost:8888
 ```
 Ops include:
 - `scrape_telegram` → Telethon-based scraper
@@ -114,9 +115,9 @@ Ops include:
 - `run_YOLO` → YOLOv8 enrichment from image folder
 - `yolo_loader` → Enrichment loader into `enriched.fct_image_detections`
 - `run_dbt`, `test_dbt` → Transformations and tests
-![Dagster UI](plots/10_job_telegram_pipeline.svg)
+![Dagster UI](insights/10_job_telegram_pipeline.svg)
 
-![Dagster job](plots/11_job_execution.png)
+![Dagster job](insights/11_job_execution.png)
 
 ---
 ### Explore Models with dbt
@@ -135,24 +136,33 @@ dbt docs serve  # Access docs at http://localhost:8080
 [dbt docs](http://localhost:8080/#!/overview/medical_insights)
 
 - Lineage Graph
-![Lineage Graph](plots/01_lineage_graph.png)
+![Lineage Graph](insights/01_lineage_graph.png)
 
 - Star Schema Diagram
-![Star Schema Diagram](plots/02_star_schema_diagram.png)
+![Star Schema Diagram](insights/02_star_schema_diagram.png)
 
 ---
 ### API Interface (FastAPI)
 
 ``` bash
-uvicorn api.main:app    #Open docs at http://localhost:8001/docs
+uvicorn api.main:app   
+uvicorn api.main:app --reload --port 8000            #Open docs at http://localhost:8000/docs
 ```
 Key endpoints:
-- `/api/reports/top-products`
-- `/api/channels/{channel_slug}/activity`
-- `/api/search/messages?query=...`
-
 - Fast API Endpoints
-![Fast API Endpoints](plots/03_fastapi_endpoints.png)
+![Fast API Endpoints](insights/03_fastapi_endpoints.png)
+
+- `/api/reports/top-products`: _“top 5 most frequently mentioned products”_
+![Query 1](insights/04_query1.png)
+![Response 1](insights/05_response1.png)
+
+- `/api/channels/{channel_slug}/activity`: _"posting activity for ‘CheMed123’ channel"_
+![Query 2](insights/06_query2.png)
+![Response 2](insights/07_response2.png)
+
+- `/api/search/messages?query=...`: _“messages containing keyword ‘vitamin’”_
+![Query 3](insights/08_query3.png)
+![Response 3](insights/09_response3.png)
 
 ---
 ## Scheduling with Dagster
