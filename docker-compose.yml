@@ -1,9 +1,9 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:15
     container_name: postgres-db
+    env_file:
+      - .env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -14,7 +14,7 @@ services:
       - pgdata:/var/lib/postgresql/data
     networks:
       - backend
-
+  
   app:
     build: .
     container_name: telegram-app
@@ -26,12 +26,15 @@ services:
       - "8000:8000"
     networks:
       - backend
-
+  
   dagster:
-    image: dagster/dagster
+    build: 
+      context: ./dagster
+      dockerfile: Dockerfile
     container_name: dagster
     ports:
-      - "3000:3000"
+      #- "3000:3000"
+      - "5055:3000"
     volumes:
       - ./dagster:/opt/dagster/app
     depends_on:
